@@ -1,0 +1,15 @@
+public class SendMail 
+{
+ public static void sendAccountCases(List<String> objId){
+       EmailTemplate et = [select Id, Name from EmailTemplate where DeveloperName = 'FormTemplate'];
+      for(String st : objId)
+      {
+        Messaging.SingleEmailMessage semail = new Messaging.SingleEmailMessage ();
+        semail.setTargetObjectId(st);
+        semail.setTemplateId(et.Id);
+          semail.setSaveAsActivity(false);
+//        semail.setWhatId('0035g00000EXLUdAAP');
+        Messaging.sendEmail(new Messaging.SingleEmailMessage[] {semail});
+      }
+    }
+}
