@@ -1,0 +1,45 @@
+public with sharing class EmailWithCheckboxController {
+ 
+ @AuraEnabled
+ public static list < contact > fetchContact() {
+  List < contact > returnConList = new List < contact > ();
+ 
+  List < contact > lstCon = [SELECT id,Name, firstName, LastName, Email, Phone From contact WHERE email != null LIMIT 10];
+  // play for loop on lstCon and add each contact to returnConList List.
+    for (contact c: lstCon) {
+       returnConList.add(c);
+    }
+ // return the List of contacts
+      return returnConList;
+ }
+ @AuraEnabled
+  public static void sendemail(List<string> ids){
+    SendMail.sendAccountCases(ids);
+  /*    List<Messaging.SingleEmailMessage> mails =  new List<Messaging.SingleEmailMessage>();     
+      for(contact cc : [select id,name,Email from contact where ID IN : ids]){
+        // Step 1: Create a new Email
+       Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+    
+    // Step 2: Set list of people who should get the email
+       List<String> sendTo = new List<String>();
+       sendTo.add(cc.Email);
+       mail.setToAddresses(sendTo);
+    
+    // Step 3: Set who the email is sent from
+       mail.setReplyTo('noreply@gmail.com'); // change it with your mail address.
+       mail.setSenderDisplayName('salesforce test User'); 
+    
+    // Step 4. Set email contents - you can use variables!
+      mail.setSubject('Contact is Created - Test');
+      mail.setHtmlBody('Dear '+ cc.name + ' <br/><br/>New Contact Record is created<br/><br/> Thanks <br/>');
+    
+    // Step 5. Add your email to the master list
+      mails.add(mail);    
+      }
+     
+    // Step 6: Send all emails in the master list
+     Messaging.sendEmail(mails);*/
+   }   
+    
+
+}
