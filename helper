@@ -1,0 +1,41 @@
+({
+    onLoad: function(component, event) {
+        console.log('onLoad call');
+        //call apex class method
+        var action = component.get('c.fetchContact');
+        action.setCallback(this, function(response) {
+            //store state of response
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                //set response value in ListOfContact attribute on component.
+                component.set('v.ListOfContact', response.getReturnValue());
+                // set deafult count and select all checkbox value to false on load 
+                component.set("v.selectedCount", 0);
+                component.find("box3").set("v.value", false);
+            }
+        });
+        $A.enqueueAction(action);
+    },
+    sendHelper: function(component, event, Ids) {
+        // call the server side controller method 	
+        var action = component.get("c.sendemail");
+        // set the 3 params to sendMailMethod method   
+        action.setParams({
+            'ids': Ids,
+            
+        });
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            if (state === "SUCCESS") {
+                var storeResponse = response.getReturnValue();
+                alert('Email send successfully');
+            }
+            else 
+            {
+                alert(JSON.stringify(response.getError()));
+            }
+            
+        });
+        $A.enqueueAction(action);
+    },
+})
